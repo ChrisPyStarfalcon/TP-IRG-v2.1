@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TP-IRG v2.0", "TP-IRG v2.0.csproj", "{A2A2FD95-0762-4B04-82C6-E42323A2DA01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2A2FD95-0762-4B04-82C6-E42323A2DA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2A2FD95-0762-4B04-82C6-E42323A2DA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2A2FD95-0762-4B04-82C6-E42323A2DA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2A2FD95-0762-4B04-82C6-E42323A2DA01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E62E2555-CA8C-40C1-AA07-3BE674873651}
+	EndGlobalSection
+EndGlobal
