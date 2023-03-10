@@ -3,19 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TP_IRGv2"
-        Closing="Window_Closing"
         mc:Ignorable="d"
-        Title="Thematic Project - Incident Response Game v2.0" Height="280" Width="538" ResizeMode="NoResize">
     <Grid>
         <Label x:Name="Situation" Content="PLACEHOLDER" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="option1" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,41,0,0" VerticalAlignment="Top" Width="200" Click="option1_Click"/>
         <Button x:Name="option2" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,72,0,0" VerticalAlignment="Top" Width="200" Click="option2_Click"/>
         <Button x:Name="option3" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,103,0,0" VerticalAlignment="Top" Width="200" Click="option3_Click"/>
         <Button x:Name="option4" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,134,0,0" VerticalAlignment="Top" Width="200" Click="option4_Click"/>
-        <Button x:Name="Refresh" Content="Refresh" Margin="0,203,10,0" VerticalAlignment="Top" Click="Refresh_Click" HorizontalAlignment="Right" Width="66"/>
-        <Button x:Name="Submit" Content="SUBMIT" HorizontalAlignment="Left" Margin="75,165,0,0" VerticalAlignment="Top" Height="37" Width="70
-                " Click="Submit_Click"/>
-        <Label x:Name="Status" Content="Status" Margin="0,228,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
     </Grid>
 </Window>

@@ -206,6 +206,7 @@ namespace TP_IRGv2
             InitializeComponent();
             Configure();
             FetchSituations();
+            InitializeComponent();
 
             PresentNextSituation();
         }
