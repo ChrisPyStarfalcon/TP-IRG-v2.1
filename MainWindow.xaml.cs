@@ -17,6 +17,16 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Threading;
 
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using Data = Google.Apis.Sheets.v4.Data;
+using Google.Apis.Auth.OAuth2.Responses;
+using System.Windows.Ink;
+using System.Runtime.InteropServices;
+
 namespace TP_IRGv2
 {
     /// <summary>
@@ -26,12 +36,122 @@ namespace TP_IRGv2
 
     public partial class MainWindow : Window
     {
+        static string ApplicationName = "TP-IRGv2";
+
         public Situation current = new Situation();
         public List<Situation> Situations = new List<Situation>();
         public List<Situation> usedQs = new List<Situation>();
         public Random rint = new Random();
         public int selected = 0;
+
+        /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+             ██████╗  ██████╗  ██████╗  ██████╗ ██╗     ███████╗     █████╗ ██████╗ ██╗
+            ██╔════╝ ██╔═══██╗██╔═══██╗██╔════╝ ██║     ██╔════╝    ██╔══██╗██╔══██╗██║
+            ██║  ███╗██║   ██║██║   ██║██║  ███╗██║     █████╗      ███████║██████╔╝██║
+            ██║   ██║██║   ██║██║   ██║██║   ██║██║     ██╔══╝      ██╔══██║██╔═══╝ ██║
+            ╚██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝███████╗███████╗    ██║  ██║██║     ██║
+             ╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝╚══════╝    ╚═╝  ╚═╝╚═╝     ╚═╝
+        All the bits for dealing with Google's API and OAuth2
+        */
+
+        static bool online = false;
+        static string SheetID = "";
+        static bool deltoken = true;
+        static string[] Scopes = { SheetsService.Scope.Spreadsheets };
+        static string Directory = System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+        static UserCredential credential;
+
+        static SheetsService Service()
+        {
+            //establishes a service with the API and passes authentication.
+            //this is needed for any interraction with the API
+            using (var stream = new FileStream(Directory + @"\credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = "Tokens";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, Scopes, "user", CancellationToken.None, new FileDataStore(credPath, true)).Result;
+            }
+
+            var service = new SheetsService(new BaseClientService.Initializer()
+            { HttpClientInitializer = credential, ApplicationName = ApplicationName, });
+
+            return service;
+        }
+
+        static List<string> Read(string range)
+        {
+            //assembles and executes API request
+            SpreadsheetsResource.ValuesResource.GetRequest request = Service().Spreadsheets.Values.Get(SheetID, range);
+            ValueRange response = new ValueRange();
+            try { response = request.Execute(); }
+            catch { MessageBox.Show("ERROR: Failed to read from" + range + " // " + response); List<string> x = new List<string>(); return x; };
+
+            //interprets response
+            List<string> output = new List<string>();
+            if (response.Values != null && response.Values.Count > 0)
+            {
+                IList<IList<object>> b = response.Values;
+                int row = 0;
+                foreach (IList<object> x in b)
+                {
+                    foreach (string val in x)
+                    {
+                        output.Add(val.ToString());
+                        row++;
+                    }
+                }
+            }
+            else { MessageBox.Show("Error: Sheet query returned null"); }
+            return output;
+        }
+
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public void Configure()
+        {
+            string[] rawfile = File.ReadAllLines("config.txt");
+            for (int i = 0; i < rawfile.Length; i++)
+            {
+                string[] s = new string[3];
+                s = rawfile[i].Split("=");
+                rawfile[i] = s[1];
+            }
+
+            Status.Content = "Offline";
+
+            try
+            {
+                if (rawfile[0] == "true") { online = true; SheetID = rawfile[1]; Status.Content = "Online"; }
+                if (rawfile[2] == "false") { deltoken = false; }
+            }
+            catch (Exception) { MessageBox.Show("Could not configure properly (Check config.txt), Continuing in offline mode"); }
+        }
+
         public void FetchSituations()
+        {
+            if (online)
+            {
+                List<string> temp = Read("Situations!G2");
+                int total = int.Parse(temp[0]);
+
+                temp = Read("Situations!A2:F" + (total + 1));
+
+                for (int i = 0; i < temp.Count; i = i + 6)
+                {
+                    Situation x = new Situation();
+                    x.situation = temp[i];
+                    x.opt1 = temp[i + 1];
+                    x.opt2 = temp[i + 2];
+                    x.opt3 = temp[i + 3];
+                    x.opt4 = temp[i + 4];
+                    x.answer = int.Parse(temp[i + 5]);
+
+                    Situations.Add(x);
+                }
+            }
+            else { FetchSituationsFromFile(); }
+        }
+
+        public void FetchSituationsFromFile()
         {
             string[] rawfile = File.ReadAllLines("situations.txt");
             foreach (string data in rawfile)
@@ -83,8 +203,9 @@ namespace TP_IRGv2
 
         public MainWindow()
         {
-            FetchSituations();
             InitializeComponent();
+            Configure();
+            FetchSituations();
 
             PresentNextSituation();
         }
@@ -126,6 +247,15 @@ namespace TP_IRGv2
                 MessageBox.Show("Incorrect");
             }
             OptionSelect(0, true);
+        }
+
+        public void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (deltoken)
+            {
+                try { File.Delete(Directory + @"\Tokens"); }
+                catch (UnauthorizedAccessException) { MessageBox.Show("Token could not be deleted: Unauthorized"); }
+            }
         }
     }
 

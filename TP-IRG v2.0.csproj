@@ -5,6 +5,11 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>TP_IRG_v2._0</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.60.0.2979" />
+  </ItemGroup>
 
 </Project>
