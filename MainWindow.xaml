@@ -1,4 +1,4 @@
-﻿<Window x:Class="TP_IRGv2.MainWindow"
+<Window x:Class="TP_IRGv2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,15 +6,18 @@
         xmlns:local="clr-namespace:TP_IRGv2"
         Closing="Window_Closing"
         mc:Ignorable="d"
-        Title="Thematic Project - Incident Response Game v2.0" Height="280" Width="574" ResizeMode="NoResize">
+        Title="Thematic Project - Incident Response Game v2.0" Height="427" Width="654" ResizeMode="NoResize">
     <Grid>
-        <Label x:Name="Situation" Content="PLACEHOLDER" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="option1" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,41,0,0" VerticalAlignment="Top" Width="447" Click="option1_Click"/>
-        <Button x:Name="option2" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,72,0,0" VerticalAlignment="Top" Width="447" Click="option2_Click"/>
-        <Button x:Name="option3" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,103,0,0" VerticalAlignment="Top" Width="447" Click="option3_Click"/>
-        <Button x:Name="option4" Content="Button" HorizontalAlignment="Left" Height="26" Margin="10,134,0,0" VerticalAlignment="Top" Width="447" Click="option4_Click"/>
-        <Button x:Name="Refresh" Content="Refresh" Margin="0,39,10,0" VerticalAlignment="Top" Click="Refresh_Click" HorizontalAlignment="Right" Width="66"/>
-        <Button x:Name="Submit" Content="SUBMIT" HorizontalAlignment="Left" Margin="10,187,0,0" VerticalAlignment="Top" Height="67" Width="447" Click="Submit_Click"/>
-        <Label x:Name="Status" Content="Status" Margin="0,67,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="/bkgrnd.png"/>
+        </Grid.Background>
+        <Label x:Name="Situation" Content="PLACEHOLDER" HorizontalAlignment="Left" Margin="32,23,0,0" VerticalAlignment="Top" Width="447"/>
+        <Button x:Name="option1" Content="Button" HorizontalAlignment="Left" Height="26" Margin="32,62,0,0" VerticalAlignment="Top" Width="447" Click="option1_Click"/>
+        <Button x:Name="option2" Content="Button" HorizontalAlignment="Left" Height="26" Margin="32,93,0,0" VerticalAlignment="Top" Width="447" Click="option2_Click"/>
+        <Button x:Name="option3" Content="Button" HorizontalAlignment="Left" Height="26" Margin="32,124,0,0" VerticalAlignment="Top" Width="447" Click="option3_Click"/>
+        <Button x:Name="option4" Content="Button" HorizontalAlignment="Left" Height="26" Margin="32,155,0,0" VerticalAlignment="Top" Width="447" Click="option4_Click"/>
+        <Button x:Name="Refresh" Content="Refresh" Margin="0,29,32,0" VerticalAlignment="Top" Click="Refresh_Click" HorizontalAlignment="Right" Width="66"/>
+        <Button x:Name="Submit" Content="SUBMIT" HorizontalAlignment="Left" Margin="32,206,0,0" VerticalAlignment="Top" Height="67" Width="447" Click="Submit_Click"/>
+        <Label x:Name="Status" Content="Status" Margin="0,54,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
     </Grid>
 </Window>
