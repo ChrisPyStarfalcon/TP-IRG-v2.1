@@ -106,6 +106,20 @@ namespace TP_IRGv2
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        public bool VerifyIntegrity()
+        {
+            string[] dest = { "bkgrnd.png", "config.txt", "credentials.json", "favicon.ico", "logo.png", "situations.txt"};
+            string conc = "";
+            bool valid = true;
+            foreach (string s in dest)
+            {
+                if (!File.Exists(s)) { conc = conc + s + ", "; valid = false; }
+            }
+
+            if (!valid) { MessageBox.Show("Failed to aquire the following: " + conc); }
+            return valid;
+        }
+
         public void Configure()
         {
             string[] rawfile = File.ReadAllLines("config.txt");
@@ -203,11 +217,14 @@ namespace TP_IRGv2
 
         public MainWindow()
         {
-            InitializeComponent();
-            Configure();
-            FetchSituations();
+            if (VerifyIntegrity())
+            {
+                InitializeComponent();
+                Configure();
+                FetchSituations();
 
-            PresentNextSituation();
+                PresentNextSituation();
+            }
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
