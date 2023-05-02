@@ -29,9 +29,37 @@ using System.Runtime.InteropServices;
 
 namespace TP_IRGv2
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /*
+        ████████╗██████╗       ██╗██████╗  ██████╗     ██╗   ██╗██████╗    ██╗
+        ╚══██╔══╝██╔══██╗      ██║██╔══██╗██╔════╝     ██║   ██║╚════██╗  ███║
+           ██║   ██████╔╝█████╗██║██████╔╝██║  ███╗    ██║   ██║ █████╔╝  ╚██║
+           ██║   ██╔═══╝ ╚════╝██║██╔══██╗██║   ██║    ╚██╗ ██╔╝██╔═══╝    ██║
+           ██║   ██║           ██║██║  ██║╚██████╔╝     ╚████╔╝ ███████╗██╗██║
+           ╚═╝   ╚═╝           ╚═╝╚═╝  ╚═╝ ╚═════╝       ╚═══╝  ╚══════╝╚═╝╚═╝
+    Made by ChrisPy
+    Github: https://github.com/ChrisPyStarfalcon
+    Discord: ChrisPy#0161
+
+    Version 2 (Release version) of the Incident Response Game that uses Google API to fetch the situations and other data. Still retains the option of offline use. 
+
+    Required Files:
+    bkgrnd.png          - Background for the UI
+    config.txt          - Editable, settings that are applied when the program is executed
+    credentials.json    - credentials required for communicating with OAuth2 and Google's API
+    favicon.ico         - Logo for the program
+    situations.txt      - Editable, used for the questions when offline mode is used
+    //----------------------------------------------------------------------------------------
+    Google.Apis.Auth.dll
+    Google.Apis.Auth.Platform Services.dll
+    Google.Apis.Core.dll
+    Google.Apis.dll
+    Google.Apis.Sheets.v4.dll
+    Newtonsoft.Json.dll
+
+    Tokens/Google.Apis.Auth.OAuth2.Responses.TokenResponse-user
+    - This is the token for logging into your google account, this is not required as the first time the program is run it will ask you to sign in and save a token.
+    
+    */
 
 
     public partial class MainWindow : Window
@@ -109,11 +137,19 @@ namespace TP_IRGv2
             return output;
         }
 
-        //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+        /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+             ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗ 
+            ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝ 
+            ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
+            ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
+            ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
+             ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝
+        Functions handling files and setup from the config file
+         */
 
         public bool VerifyIntegrity()
         {
-            string[] dest = { "bkgrnd.png", "credentials.json", "favicon.ico", "logo.png", "situations.txt"};
+            string[] dest = { "bkgrnd.png", "credentials.json", "favicon.ico", "situations.txt"};
             string conc = "";
             bool valid = true;
             foreach (string s in dest)
@@ -145,6 +181,27 @@ namespace TP_IRGv2
             catch (Exception) { MessageBox.Show("Could not configure properly (Check config.txt), Continuing in offline mode"); }
         }
 
+        public void FetchSituationsFromFile()
+        {
+            string[] rawfile = File.ReadAllLines("situations.txt");
+            foreach (string data in rawfile)
+            {
+                Situation temp = new Situation();
+                temp.Load(data);
+                Situations.Add(temp);
+            }
+        }
+
+        /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+            ███████╗██╗████████╗██╗   ██╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
+            ██╔════╝██║╚══██╔══╝██║   ██║██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+            ███████╗██║   ██║   ██║   ██║███████║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+            ╚════██║██║   ██║   ██║   ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+            ███████║██║   ██║   ╚██████╔╝██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
+            ╚══════╝╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+        Fuctions responsible for presenting and shuffling the quiz questions
+         */
+
         public void FetchSituations()
         {
             if (online)
@@ -170,17 +227,6 @@ namespace TP_IRGv2
             else { FetchSituationsFromFile(); }
         }
 
-        public void FetchSituationsFromFile()
-        {
-            string[] rawfile = File.ReadAllLines("situations.txt");
-            foreach (string data in rawfile)
-            {
-                Situation temp = new Situation();
-                temp.Load(data);
-                Situations.Add(temp);
-            }
-        }
-
         public void PresentNextSituation()
         {
             PresentSituation(Situations[rint.Next(0, Situations.Count - 1)]);
@@ -196,6 +242,45 @@ namespace TP_IRGv2
             option4.Content = x.opt4;
             Situations.Remove(x);
         }
+
+        /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+            ███╗   ███╗ █████╗ ██╗███╗   ██╗
+            ████╗ ████║██╔══██╗██║████╗  ██║
+            ██╔████╔██║███████║██║██╔██╗ ██║
+            ██║╚██╔╝██║██╔══██║██║██║╚██╗██║
+            ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
+            ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+        */
+        public MainWindow()
+        {
+            if (File.Exists("config.txt"))
+            {
+                InitializeComponent();
+                Configure();
+
+                if (VerifyIntegrity())
+                {
+
+                    FetchSituations();
+
+                    PresentNextSituation();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Config file not found.");
+            }
+        }
+
+        /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+            ██╗   ██╗██╗    ███████╗██╗     ███████╗███╗   ███╗███████╗███╗   ██╗████████╗███████╗
+            ██║   ██║██║    ██╔════╝██║     ██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
+            ██║   ██║██║    █████╗  ██║     █████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   ███████╗
+            ██║   ██║██║    ██╔══╝  ██║     ██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   ╚════██║
+            ╚██████╔╝██║    ███████╗███████╗███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   ███████║
+             ╚═════╝ ╚═╝    ╚══════╝╚══════╝╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
+        All the functions and event handlers for the UI elements
+        */
 
         public Button FindOptionButton(int x)
         {
@@ -217,27 +302,6 @@ namespace TP_IRGv2
             if (!reset)
             {
                 FindOptionButton(x).Background = Brushes.Gray;
-            }
-        }
-
-        public MainWindow()
-        {
-            if (File.Exists("config.txt"))
-            {
-                InitializeComponent();
-                Configure();
-
-                if (VerifyIntegrity())
-                {
-
-                    FetchSituations();
-
-                    PresentNextSituation();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Config file not found.");
             }
         }
 
@@ -307,6 +371,15 @@ namespace TP_IRGv2
             }
         }
     }
+
+    /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+         ██████╗██╗      █████╗ ███████╗███████╗███████╗███████╗
+        ██╔════╝██║     ██╔══██╗██╔════╝██╔════╝██╔════╝██╔════╝
+        ██║     ██║     ███████║███████╗███████╗█████╗  ███████╗
+        ██║     ██║     ██╔══██║╚════██║╚════██║██╔══╝  ╚════██║
+        ╚██████╗███████╗██║  ██║███████║███████║███████╗███████║
+         ╚═════╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝
+    */
 
     public class Situation
     {
