@@ -1,0 +1,11 @@
+A suspicious email with a malicious attachment is received by an employee.,option 1,option 2,option 3,option 4,1
+A website is defaced with political messages.,option 1,option 2,option 3,option 4,1
+A ransomware attack encrypts all the files on a server.,option 1,option 2,option 3,option 4,1
+A phishing email convinces an employee to disclose their password.,option 1,option 2,option 3,option 4,1
+A rogue access point is discovered on the network.,option 1,option 2, option 3,option 4,1
+An unauthorized person gains access to sensitive data.,option 1,option 2,option 3,option 4,1
+A denial of service attack disrupts the availability of a website.,option 1,option 2,option 3,option 4,1
+Malware is detected on a user's computer.,option 1,option 2,option 3,option 4,1
+A vulnerability is discovered in a widely used software.,option 1,option 2,option 3,option 4,1
+An employee loses their laptop with sensitive data.,option 1,option 2,option 3,option 4,1
+An unauthorized person gains access to sensitive data,Ignore it,Detect and Respond to Intrusions Quickly,Report to the authorities,Don’t take any Legal Action against the unauthorized person,2
