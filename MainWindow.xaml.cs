@@ -36,13 +36,18 @@ namespace TP_IRGv2
 
     public partial class MainWindow : Window
     {
-        static string ApplicationName = "TP-IRGv2";
+        const string ApplicationName = "TP-IRGv2";
 
         public Situation current = new Situation();
         public List<Situation> Situations = new List<Situation>();
         public List<Situation> usedQs = new List<Situation>();
         public Random rint = new Random();
+
+        const int spq = 4;
+
         public int selected = 0;
+        public int score = 0;
+        public int currscore = spq;
 
         /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
              ██████╗  ██████╗  ██████╗  ██████╗ ██╗     ███████╗     █████╗ ██████╗ ██╗
@@ -108,7 +113,7 @@ namespace TP_IRGv2
 
         public bool VerifyIntegrity()
         {
-            string[] dest = { "bkgrnd.png", "config.txt", "credentials.json", "favicon.ico", "logo.png", "situations.txt"};
+            string[] dest = { "bkgrnd.png", "credentials.json", "favicon.ico", "logo.png", "situations.txt"};
             string conc = "";
             bool valid = true;
             foreach (string s in dest)
@@ -217,51 +222,78 @@ namespace TP_IRGv2
 
         public MainWindow()
         {
-            if (VerifyIntegrity())
+            if (File.Exists("config.txt"))
             {
                 InitializeComponent();
                 Configure();
-                FetchSituations();
 
-                PresentNextSituation();
+                if (VerifyIntegrity())
+                {
+
+                    FetchSituations();
+
+                    PresentNextSituation();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Config file not found.");
             }
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            PresentNextSituation();
+            if (MessageBox.Show("Are you sure you want to reset the game?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Situations = new List<Situation>();
+                FetchSituations();
+                score = 0;
+                currscore = spq;
+                ScoreBox.Content = score.ToString();
+                PresentNextSituation();
+            }
+
+            Response.Content = "";
         }
 
         private void option1_Click(object sender, RoutedEventArgs e)
         {
             OptionSelect(1, false);
+            Response.Content = "";
         }
 
         private void option2_Click(object sender, RoutedEventArgs e)
         {
             OptionSelect(2, false);
+            Response.Content = "";
         }
 
         private void option3_Click(object sender, RoutedEventArgs e)
         {
             OptionSelect(3, false);
+            Response.Content = "";
         }
 
         private void option4_Click(object sender, RoutedEventArgs e)
         {
             OptionSelect(4, false);
+            Response.Content = "";
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             if (selected == current.answer)
             {
-                MessageBox.Show("Correct");
+                Response.Content = "Correct!";
+                score = score + currscore;
+                currscore = spq;
+                ScoreBox.Content = score.ToString();
                 PresentNextSituation();
             }
             else if (selected != 0)
             {
-                MessageBox.Show("Incorrect");
+                Response.Content = "Incorrect!";
+                if (currscore > 0) { currscore = currscore - 1; }
             }
             OptionSelect(0, true);
         }

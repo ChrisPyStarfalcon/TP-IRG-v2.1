@@ -19,5 +19,8 @@
         <Button x:Name="Refresh" Content="Refresh" Margin="0,29,32,0" VerticalAlignment="Top" Click="Refresh_Click" HorizontalAlignment="Right" Width="66"/>
         <Button x:Name="Submit" Content="SUBMIT" HorizontalAlignment="Left" Margin="32,206,0,0" VerticalAlignment="Top" Height="67" Width="447" Click="Submit_Click"/>
         <Label x:Name="Status" Content="Status" Margin="0,54,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
+        <Label x:Name="ScoreBox" Content="0" Margin="0,100,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
+        <Label Content="SCORE:" Margin="0,100,73,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="66"/>
+        <Label x:Name="Response" Content="" Margin="0,200,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="107"/>
     </Grid>
 </Window>
