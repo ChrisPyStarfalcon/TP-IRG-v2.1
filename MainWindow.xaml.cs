@@ -76,6 +76,7 @@ namespace TP_IRGv2
         public int selected = 0;
         public int score = 0;
         public int currscore = spq;
+        bool endstate = false;
 
         /*--------------------------------------------------------------------------------------------------------------------------------------------------------------
              ██████╗  ██████╗  ██████╗  ██████╗ ██╗     ███████╗     █████╗ ██████╗ ██╗
@@ -229,7 +230,15 @@ namespace TP_IRGv2
 
         public void PresentNextSituation()
         {
-            PresentSituation(Situations[rint.Next(0, Situations.Count - 1)]);
+            if (Situations.Count > 0)
+            {
+                PresentSituation(Situations[rint.Next(0, Situations.Count - 1)]);
+            }
+            else
+            {
+                MessageBox.Show("Congratulations! You have finished the quiz with a score of " + score + "!");
+                endstate = true;
+            }
         }
 
         public void PresentSituation(Situation x)
@@ -346,18 +355,21 @@ namespace TP_IRGv2
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            if (selected == current.answer)
+            if (endstate == false)
             {
-                Response.Content = "Correct!";
-                score = score + currscore;
-                currscore = spq;
-                ScoreBox.Content = score.ToString();
-                PresentNextSituation();
-            }
-            else if (selected != 0)
-            {
-                Response.Content = "Incorrect!";
-                if (currscore > 0) { currscore = currscore - 1; }
+                if (selected == current.answer)
+                {
+                    Response.Content = "Correct!";
+                    score = score + currscore;
+                    currscore = spq;
+                    ScoreBox.Content = score.ToString();
+                    PresentNextSituation();
+                }
+                else if (selected != 0)
+                {
+                    Response.Content = "Incorrect!";
+                    if (currscore > 0) { currscore = currscore - 1; }
+                }
             }
             OptionSelect(0, true);
         }
